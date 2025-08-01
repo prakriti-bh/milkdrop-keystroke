@@ -3,10 +3,30 @@
   "displayName": "Milkdrop Code Visualizer",
   "description": "Real-time Milkdrop-style WebGL visualization for keystrokes and cursor movement",
   "version": "1.0.0",
+  "publisher": "Prakriti Bhattacharya",
+  "author": {
+    "name": "Prakriti Bhattacharya",
+    "email": "missyprakriti@example.com"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/prakriti-bh/milkdrop-visualizer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/prakriti-bh/milkdrop-visualizer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/prakriti-bh/milkdrop-visualizer/issues"
+  },
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
+  "categories": ["Other", "Visualization"],
+  "keywords": ["visualizer", "milkdrop", "coding", "webgl", "particles"],
   "engines": {
     "vscode": "^1.74.0"
   },
-  "categories": ["Other"],
   "activationEvents": [
     "onStartupFinished"
   ],
@@ -15,18 +35,26 @@
     "commands": [
       {
         "command": "milkdrop-visualizer.toggle",
-        "title": "Toggle Milkdrop Visualizer"
+        "title": "Toggle Milkdrop Visualizer",
+        "icon": "$(play)"
       },
       {
         "command": "milkdrop-visualizer.nextPreset",
-        "title": "Milkdrop: Next Preset"
+        "title": "Milkdrop: Next Preset",
+        "icon": "$(arrow-right)"
       },
       {
         "command": "milkdrop-visualizer.prevPreset",
-        "title": "Milkdrop: Previous Preset"
+        "title": "Milkdrop: Previous Preset", 
+        "icon": "$(arrow-left)"
       }
     ],
     "keybindings": [
+      {
+        "command": "milkdrop-visualizer.toggle",
+        "key": "ctrl+shift+alt+m",
+        "when": "editorTextFocus"
+      },
       {
         "command": "milkdrop-visualizer.nextPreset",
         "key": "ctrl+shift+m",
@@ -40,14 +68,14 @@
           "type": "string",
           "enum": ["low", "medium", "high", "ultra"],
           "default": "high",
-          "description": "Performance/quality setting"
+          "description": "Performance/quality setting for WebGL rendering"
         },
         "milkdrop.targetFPS": {
           "type": "number",
           "default": 60,
           "minimum": 30,
           "maximum": 120,
-          "description": "Target frame rate"
+          "description": "Target frame rate for visualization"
         },
         "milkdrop.sensitivity": {
           "type": "number",
@@ -59,17 +87,48 @@
         "milkdrop.autoPresetChange": {
           "type": "boolean",
           "default": false,
-          "description": "Automatically cycle through presets"
+          "description": "Automatically cycle through presets every 30 seconds"
+        },
+        "milkdrop.enableOnStartup": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically start visualizer when VS Code opens"
         }
       }
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "milkdrop-visualizer.toggle"
+        },
+        {
+          "command": "milkdrop-visualizer.nextPreset",
+          "when": "milkdropActive"
+        },
+        {
+          "command": "milkdrop-visualizer.prevPreset",
+          "when": "milkdropActive"
+        }
+      ]
     }
   },
   "scripts": {
+    "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./"
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package",
+    "publish": "vsce publish"
   },
   "devDependencies": {
     "@types/vscode": "^1.74.0",
-    "typescript": "^4.9.4"
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "eslint": "^8.28.0",
+    "typescript": "^4.9.4",
+    "@vscode/vsce": "^2.15.0"
   }
 }
