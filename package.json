@@ -1,0 +1,75 @@
+{
+  "name": "milkdrop-visualizer",
+  "displayName": "Milkdrop Code Visualizer",
+  "description": "Real-time Milkdrop-style WebGL visualization for keystrokes and cursor movement",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "milkdrop-visualizer.toggle",
+        "title": "Toggle Milkdrop Visualizer"
+      },
+      {
+        "command": "milkdrop-visualizer.nextPreset",
+        "title": "Milkdrop: Next Preset"
+      },
+      {
+        "command": "milkdrop-visualizer.prevPreset",
+        "title": "Milkdrop: Previous Preset"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "milkdrop-visualizer.nextPreset",
+        "key": "ctrl+shift+m",
+        "when": "milkdropActive"
+      }
+    ],
+    "configuration": {
+      "title": "Milkdrop Visualizer",
+      "properties": {
+        "milkdrop.performanceMode": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "ultra"],
+          "default": "high",
+          "description": "Performance/quality setting"
+        },
+        "milkdrop.targetFPS": {
+          "type": "number",
+          "default": 60,
+          "minimum": 30,
+          "maximum": 120,
+          "description": "Target frame rate"
+        },
+        "milkdrop.sensitivity": {
+          "type": "number",
+          "default": 1.0,
+          "minimum": 0.1,
+          "maximum": 3.0,
+          "description": "Input sensitivity multiplier"
+        },
+        "milkdrop.autoPresetChange": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically cycle through presets"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "typescript": "^4.9.4"
+  }
+}
